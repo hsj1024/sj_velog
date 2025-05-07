@@ -37,7 +37,8 @@ for entry in feed.entries:
         with open(file_path, 'w', encoding='utf-8') as file:
             file.write(f"# {entry.title}\n\n")
             file.write(f"🔗 [원문 링크]({entry.link})\n\n")
-            file.write(f"🗓 작성일: {entry.published}\n\n"            file.write(entry.description)
+            file.write(f"🗓 작성일: {entry.published}\n\n")
+            file.write(entry.description)
 
         repo.git.add(file_path)
         repo.git.commit('-m', f'Add post: {entry.title} [tag: {tag}]')
