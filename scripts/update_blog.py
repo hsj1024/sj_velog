@@ -1,7 +1,6 @@
 import feedparser
 import git
 import os
-from bs4 import BeautifulSoup
 from datetime import datetime
 
 # 벨로그 RSS 피드 URL
@@ -22,18 +21,21 @@ for entry in feed.entries:
     title = entry.title.replace('/', '-').replace('\\', '-').strip()
     file_name = f"{pub_date}_{title}.md"
 
-    # 본문에서 태그 추출
-    soup = BeautifulSoup(entry.description, 'html.parser')
-    tags = [tag.text.strip() for tag in soup.find_all('a', class_='tag')]
-    tag = tags[0] if tags else 'etc'
+    # 제목 기반 태그 분류
+    if "프로그래머스" in title:
+        tag = "Programmers"
+    elif "백준" in title:
+        tag = "Baekjoon"
+    else:
+        tag = "etc"
 
-    # 폴더 경로 구성
+    # 폴더 경로
     tag_dir = os.path.join(repo_path, 'velog-posts', tag)
     os.makedirs(tag_dir, exist_ok=True)
 
     file_path = os.path.join(tag_dir, file_name)
 
-    # 파일이 없으면 저장 및 커밋
+    # 파일이 없을 경우 저장 및 커밋
     if not os.path.exists(file_path):
         with open(file_path, 'w', encoding='utf-8') as file:
             file.write(f"# {entry.title}\n\n")
@@ -45,7 +47,7 @@ for entry in feed.entries:
         repo.git.add(file_path)
         repo.git.commit('-m', f"Add post: {entry.title} [tag: {tag}]")
 
-# 변경사항이 있을 경우에만 푸시
+# 변경 사항 있을 경우에만 push
 if repo.is_dirty(untracked_files=True):
     print("🚀 변경사항 감지됨 → 푸시 중...")
     repo.git.push()
