@@ -10,6 +10,10 @@ rss_url = 'https://api.velog.io/rss/@tjeudeud'
 repo_path = '.'
 repo = git.Repo(repo_path)
 
+# ✅ GitHub Actions 환경에서 필요한 커밋 정보 설정
+repo.git.config('user.name', 'github-actions[bot]')
+repo.git.config('user.email', 'github-actions[bot]@users.noreply.github.com')
+
 # RSS 피드 파싱
 feed = feedparser.parse(rss_url)
 
