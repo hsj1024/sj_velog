@@ -2,10 +2,9 @@ name: Update Blog Posts
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   schedule:
-    - cron: '*/5 * * * *'  # 매 5분마다 실행 (UTC 기준)
+    - cron: '*/5 * * * *'  # 5분마다 실행
 
 jobs:
   update_blog:
@@ -13,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actioncheckout@v2
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -22,7 +21,15 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install feedparser gitpython beautifulsoup4
+        pip install feedparser
 
     - name: Run script
       run: python scripts/update_blog.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add velog-posts/
+        git commit -m "🔄 Update blog posts from Velog" || echo "Nothing to commit"
+        git push https://${{ secrets.GH_PAT }}@github.com/hsj1024/sj_velog.git
