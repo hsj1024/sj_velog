@@ -38,3 +38,8 @@ for entry in feed.entries:
             file.write(f"🗓 작성일: {entry.published}\n\n")
             file.write(entry.description)
         print(f"✅ 새 글 저장됨: {file_path}")
+
+# timestamp 저장
+timestamp_path = os.path.join(repo_path, 'velog-posts', 'last_updated.txt')
+with open(timestamp_path, 'w') as f:
+    f.write(datetime.utcnow().strftime("⏱ 마지막 업데이트: %Y-%m-%d %H:%M UTC"))
