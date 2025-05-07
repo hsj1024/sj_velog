@@ -32,7 +32,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install feedparser gitpython
+        pip install feedparser gitpython beautifulsoup4
 
     - name: Run script
       run: python scripts/update_blog.py
