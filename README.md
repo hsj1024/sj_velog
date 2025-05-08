@@ -10,5 +10,5 @@
 
 📌 최근 실행 시간:
 <pre>
-(velog-posts/last_updated.txt 파일 참조)
+(velog-posts/last_updated.txt 파일 참조) 
 </pre>
