@@ -31,5 +31,9 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add velog-posts/
-        git commit -m "🔄 Update blog posts from Velog" || echo "Nothing to commit"
-        git push https://${{ secrets.GH_PAT }}@github.com/hsj1024/sj_velog.git
+        if ! git diff --cached --quiet; then
+          git commit -m "🔄 Update blog posts from Velog"
+          git push https://${{ secrets.GH_PAT }}@github.com/hsj1024/sj_velog.git
+        else
+          echo "✅ No changes to commit"
+        fi
